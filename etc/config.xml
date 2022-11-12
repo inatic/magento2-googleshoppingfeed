@@ -1,0 +1,14 @@
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <inaticfeeds>
+            <googleshopping>
+                <enabled>1</enabled>
+                <default_google_product_category>473</default_google_product_category>
+                <default_title>My Product Feed</default_title>
+                <default_url>https://mywebsite.com</default_url>
+                <default_description>Product Feed for Google Shopping</default_description>
+            </googleshopping>
+        </inaticfeeds>
+    </default>
+</config>
+

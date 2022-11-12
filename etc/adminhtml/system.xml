@@ -1,0 +1,35 @@
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="marketing" translate="label" sortOrder="410">
+            <label>Marketing</label>
+        </tab>
+        <section id="inaticfeeds" translate="label" type="text" sortOrder="110" showInDefault="1" showInWebsite="1"
+                 showInStore="1">
+            <label>Feeds</label>
+            <tab>marketing</tab>
+            <resource>Inatic_GoogleShoppingFeed::inaticfeeds_config</resource>
+            <group id="googleshopping" translate="label" type="text" sortOrder="120" showInDefault="1" showInWebsite="1"
+                   showInStore="1">
+                <label>Google Shopping Feed</label>
+                <field id="enabled" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable Google Shopping XML Feed?</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="default_google_product_category" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Default Google Shopping Category</label>
+                    <comment>Google category to use for products in feed if not set on product level.</comment>
+                </field>
+                <field id="default_title" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Title for feed</label>
+                </field>
+                <field id="default_url" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>URL for feed</label>
+                    <comment>Should use http:// or https://</comment>
+                </field>
+                <field id="default_description" translate="label" type="text" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Description for feed</label>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

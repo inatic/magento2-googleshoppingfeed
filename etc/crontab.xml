@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
+    <group id="default">
+        <job name="inatic_googleshopping_feed_xml" instance="Inatic\GoogleShoppingFeed\Cron\GenerateFile" method="execute">
+            <schedule>40 00 * * *</schedule>
+        </job>
+    </group>
+</config>
