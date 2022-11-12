@@ -12,19 +12,19 @@ $ bin/magento setup:upgrade
 $ bin/magento cache:clean
 ```
 
-For this module to function (as it is configured here), you will need to create a few custom attributes. The first of following attributes is used in `Helper/Products.php` so only the products having `add_to_googleshopping_feed` set to **Yes** are added to the feed.
+For this module to function (as it is configured here), you will need to create a few custom attributes. The first of following attributes is used (in `Helper/Products.php`) to determine if a given product is added to the feed.
 
 | Attribute                     | Type
 |-------------------------------|----------------
 | add_to_googleshopping_feed    | Yes/No
-| brand (*merk* in our case)    | Text
+| brand (**merk** in our case)  | Text
 | gtin                          | Text
 | mpn                           | Text
 | condition                     | Text
-| color (*kleur* in our case)   | Text
+| color (**kleur** in our case) | Text
 | google_product_category       | Text
 
-You can use other names than those specified above (as we use `kleur` and `merk`), just make sure you set the correct names of custom attributes in the `Model/XmlFeed.php` file.
+You can use other names than those specified above (as we use `kleur` and `merk`), just make sure you set the correct names of those custom attributes in the `Model/XmlFeed.php` file.
 
 ```
 $xml .= $this->createNode("g:brand", $product->getAttributeText('merk'));
@@ -35,11 +35,13 @@ $xml .= $this->createNode("g:color", ucfirst($product->getAttributeText('kleur')
 $xml .= $this->createNode("g:google_product_category",$product->getAttributeText("google_product_category"));
 ```
 
-Configuration options for the module can be accessed from the admin panel at **Stores | Configuration | Marketing | Feeds**. To access the feed itself, go to : www.website.com/inaticgoogleshoppingfeed/
+Configuration options for the module can be accessed from the admin panel at **Stores | Configuration | Marketing | Feeds**. 
+
+To access the feed, go to : www.website.com/inaticgoogleshoppingfeed/
 
 # Example XML file
 
-For information on the type of content that is expected in a Google Shopping feed, you can download an example XML file by going to [this Google Merchant Center help page](https://support.google.com/merchants/answer/160589) and clicking the **Download RSS 2.0 example** button. A trimmed-down version of the content of this example can be found on the same page and looks somewhat like the following:
+For information on the type of content that is expected in a Google Shopping feed, you can download an example XML file by going to [this Google Merchant Center help page](https://support.google.com/merchants/answer/160589) and clicking the **Download RSS 2.0 example** button. A trimmed-down version of the file's content can be found on the same page and looks somewhat like the following:
 
 ```googleshoppingfeedexample.xml
 <?xml version="1.0"?>
@@ -73,11 +75,11 @@ For information on the type of content that is expected in a Google Shopping fee
 
 # Product attributes
 
-An overview of required and optional attributes for a Google Shopping feed can be found [here](https://support.google.com/merchants/answer/9199328) and [here](https://support.google.com/merchants/answer/7052112) on Google's developer website. A default Magento 2 installation provides some attributes for use in a Google Shopping feed (`id`, `title`, `description`...) out of the box, while other attributes can be created in the website's admin panel by going to **Stores | Attributes | Product**.
+An overview of required and optional attributes for a Google Shopping feed can be found on Google's developer website ([here](https://support.google.com/merchants/answer/9199328) and [here](https://support.google.com/merchants/answer/7052112)). A default Magento 2 installation has some of the attributes for a Google Shopping feed 'out of the box' (`id`, `title`, `description`...), while other attributes can be created from the admin panel by going to **Stores | Attributes | Product**.
 
 ## Required attributes
 
-Going by [this Google Merchant Center article](https://support.google.com/merchants/answer/7052112), each product should at minimum provide the attributes in below table. Most of them have a corresponding attribute in a default Magento installation, but some (like `condition` and `brand`) need to be added manually. You can edit the `Model/XmlFeed.php` file to use attribute values already present in your Magento installation - we for example set `condition` to `new` for all products and already have a `brand` attribute, though it was named differently. 
+Each product should at minimum provide the attributes in below table ([source](https://support.google.com/merchants/answer/7052112)). Most of them have a corresponding attribute in a default Magento installation, but some (like `condition` and `brand`) need to be added manually. You can edit the `Model/XmlFeed.php` file to use attribute values already present in your Magento installation - we for example set `condition` to `new` for all products and already have a `brand` attribute, though it was named differently. 
 
 | Google Shopping   | Magento           | Comment
 |-------------------|-------------------|----------------    
