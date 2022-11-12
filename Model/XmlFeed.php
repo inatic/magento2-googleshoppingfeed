@@ -155,39 +155,39 @@ class XmlFeed
 
         # Required attributes
         $xml = '';
-        $xml .= $this->createNode("id", $product->getId());
-        $xml .= $this->createNode("title", $product->getName(), true);
-        $xml .= $this->createNode("description", $this->fixDescription($product->getDescription()), true);
-        $xml .= $this->createNode("link", $product->getProductUrl());
-        $xml .= $this->createNode("image_link", $image_link);
-        $xml .= $this->createNode("availability", ( $product->isSaleable() ) ? 'in stock' : 'out of stock');
-        $xml .= $this->createNode("price",number_format($regularPrice,2,'.','').' '.$currencySymbol);
-        $xml .= $this->createNode("brand", $product->getAttributeText('merk'));
+        $xml .= $this->createNode("g:id", $product->getId());
+        $xml .= $this->createNode("g:title", $product->getName(), true);
+        $xml .= $this->createNode("g:description", $this->fixDescription($product->getDescription()), true);
+        $xml .= $this->createNode("g:link", $product->getProductUrl());
+        $xml .= $this->createNode("g:image_link", $image_link);
+        $xml .= $this->createNode("g:availability", ( $product->isSaleable() ) ? 'in stock' : 'out of stock');
+        $xml .= $this->createNode("g:price",number_format($regularPrice,2,'.','').' '.$currencySymbol);
+        $xml .= $this->createNode("g:brand", $product->getAttributeText('merk'));
         if (!empty($product->getData("ean"))) {
-            $xml .= $this->createNode("gtin", $product->getData("ean"));
+            $xml .= $this->createNode("g:gtin", $product->getData("ean"));
         }
         if (!empty($product->getData("mpn"))) { 
-            $xml .= $this->createNode("mpn", $product->getData("mpn"));
+            $xml .= $this->createNode("g:mpn", $product->getData("mpn"));
         }
-        $xml .= $this->createNode("condition", "new");
+        $xml .= $this->createNode("g:condition", "new");
 
         # Optional attributes
         if (($specialPrice < $regularPrice) && !empty($specialPrice)) {
-            $xml .= $this->createNode("sale_price",number_format($specialPrice,2,'.','').' '.$currencySymbol);
+            $xml .= $this->createNode("g:sale_price",number_format($specialPrice,2,'.','').' '.$currencySymbol);
         }
-        $xml .= $this->createNode("custom_label_0", $this->getProductCategories($product), true);
-        $xml .= $this->createNode("product_type", $this->getProductCategories($product), true);
-        $xml .= $this->createNode("color", ucfirst($product->getAttributeText('kleur')));
+        $xml .= $this->createNode("g:custom_label_0", $this->getProductCategories($product), true);
+        $xml .= $this->createNode("g:product_type", $this->getProductCategories($product), true);
+        $xml .= $this->createNode("g:color", ucfirst($product->getAttributeText('kleur')));
         if (!empty($product->getAttributeText("google_product_category"))) {
-            $xml .= $this->createNode("google_product_category",$product->getAttributeText("google_product_category"));
+            $xml .= $this->createNode("g:google_product_category",$product->getAttributeText("google_product_category"));
         } elseif (!empty($this->helper->getConfig("default_google_product_category"))) {
-            $xml .= $this->createNode("google_product_category",$this->helper->getConfig('default_google_product_category'));
+            $xml .= $this->createNode("g:google_product_category",$this->helper->getConfig('default_google_product_category'));
         }
         $images = $product->getMediaGalleryImages()->getItems();
         array_shift($images);
         if ($images){
             foreach ($images as $image){
-                $xml .= $this->createNode("additional_image_link", $image['url']);
+                $xml .= $this->createNode("g:additional_image_link", $image['url']);
             }
         }
     

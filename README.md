@@ -27,12 +27,12 @@ For this module to function (as it is configured here), you will need to create 
 You can use other names than those specified above (as we use `kleur` and `merk`), just make sure you set the correct names of custom attributes in the `Model/XmlFeed.php` file.
 
 ```
-$xml .= $this->createNode("brand", $product->getAttributeText('merk'));
-$xml .= $this->createNode("gtin", $product->getData("ean"));
-$xml .= $this->createNode("mpn", $product->getData("mpn"));
-$xml .= $this->createNode("condition", "new");
-$xml .= $this->createNode("color", ucfirst($product->getAttributeText('kleur')));
-$xml .= $this->createNode("google_product_category",$product->getAttributeText("google_product_category"));
+$xml .= $this->createNode("g:brand", $product->getAttributeText('merk'));
+$xml .= $this->createNode("g:gtin", $product->getData("ean"));
+$xml .= $this->createNode("g:mpn", $product->getData("mpn"));
+$xml .= $this->createNode("g:condition", "new");
+$xml .= $this->createNode("g:color", ucfirst($product->getAttributeText('kleur')));
+$xml .= $this->createNode("g:google_product_category",$product->getAttributeText("google_product_category"));
 ```
 
 Configuration options for the module can be accessed from the admin panel at **Stores | Configuration | Marketing | Feeds**. To access the feed itself, go to : www.website.com/inaticgoogleshoppingfeed/
