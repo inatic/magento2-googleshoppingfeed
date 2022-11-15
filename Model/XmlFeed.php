@@ -151,8 +151,8 @@ class XmlFeed
         }
         $regularPrice = $regularPriceExcludingTax * (1 + $rate / 100);
         $specialPrice = $specialPriceExcludingTax * (1 + $rate / 100);
-        $currencySymbol = $this->productFeedHelper->getCurrentCurrencySymbol();
-
+        $currencySymbol = $this->storeManager->getStore()->getCurrentCurrencyCode();
+            
         # Required attributes
         $xml = '';
         $xml .= $this->createNode("g:id", $product->getId());

@@ -64,7 +64,6 @@ class Products extends AbstractHelper
     public function getFilteredProducts()
     {
         $collection = $this->productCollectionFactory->create();
-        // $collection->addAttributeToFilter('status',\Magento\Catalog\Model\Product\Attribute\Source\Status::STATUS_ENABLED);
         $collection->addAttributeToSelect('*');
         $collection->addAttributeToFilter('status', ['in' => $this->productStatus->getVisibleStatusIds()]);
         $collection->addAttributeToFilter('visibility', ['eq' => Visibility::VISIBILITY_BOTH]);
@@ -76,30 +75,4 @@ class Products extends AbstractHelper
         return $collection;
     }
 
-    public function getAttributeSet($product)
-    {
-        $attributeSetId = $product->getAttributeSetId();
-        return $this->attributeSetRepo->get($attributeSetId)->getAttributeSetName();
-    }
-
-    public function getProductValue($product, $attributeCode)
-    {
-        $attributeCodeFromConfig = $this->helper->getConfig($attributeCode.'_attribute');
-        $defaultValue = $this->helper->getConfig('default_'.$attributeCode);
-
-        if (!empty($attributeCodeFromConfig)) {
-            return $product->getAttributeText($attributeCodeFromConfig);
-        }
-
-        if (!empty($defaultValue)) {
-            return $defaultValue;
-        }
-
-        return false;
-    }
-
-    public function getCurrentCurrencySymbol()
-    {
-        return $this->storeManager->getStore()->getCurrentCurrencyCode();
-    }
 }
