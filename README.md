@@ -54,7 +54,8 @@ For information on the type of content that is expected in a Google Shopping fee
 <g:id>TV_123456</g:id>
 <g:title>Google Chromecast with Google TV</g:title>
 <g:description>Chromecast with Google TV brings you the entertainment you love, in up to 4K HDR</g:description>
-<g:link>https://store.google.com/product/chromecast_google_tv</g:link> <g:image_link>https://images.example.com/TV_123456.png</g:image_link>
+<g:link>https://store.google.com/product/chromecast_google_tv</g:link>
+<g:image_link>https://images.example.com/TV_123456.png</g:image_link>
 <g:condition>new</g:condition>
 <g:availability>in stock</g:availability>
 <g:price>49.99 USD</g:price>
@@ -101,7 +102,7 @@ The feed specification provides and attribute (`shipping`) for setting the shipp
 
 ## Optional attributes
 
-A range of optional attributes can furthermore be added to a product. Details of these attributes can be found in [the same Google Merchant Center article](https://support.google.com/merchants/answer/7052112). Again, some corresponding Magento attributes might need to be added from the website's admin panel. The following is just a short selection of available optional attributes, a full list can be found on Google's support website.
+A range of optional attributes can furthermore be added to a product. Details of these attributes can be found in [the same Google Merchant Center article](https://support.google.com/merchants/answer/7052112). Again, some corresponding Magento attributes will need to be added from the website's admin panel. The following is just a short selection of available optional attributes, a full list can be found on Google's support website by following the previous link.
 
 | Google Shopping                   | Magento                   | Comment
 |-----------------------------------|---------------------------|-------------------
@@ -118,9 +119,9 @@ A range of optional attributes can furthermore be added to a product. Details of
 | rich_text_description             |							|
 | video                             |							|
 
-## Add to Facebook feed
+## Add to Google Shopping feed
 
-The `add_to_googleshopping_feed` attribute mentioned above is used by the website administrator to specify which products need to be added to the feed. This is an attribute you add by going to **Stores | Attributes | Product** and has `Yes/No` as its possible values. This attribute is used in `Helper/Products.php` to filter the product collection from which the feed is generated in `Model/XmlFeed.php`.
+The `add_to_googleshopping_feed` attribute mentioned above is used by the website administrator to specify which products are included in the feed. This is an attribute you add by going to **Stores | Attributes | Product** and has `Yes/No` as its possible values. This attribute is used in `Helper/Products.php` to filter the product collection from which the feed is generated in `Model/XmlFeed.php`.
 
 ```Helper/Products.php
 public function getFilteredProducts()
@@ -139,7 +140,7 @@ public function getFilteredProducts()
 
 # How the module works
 
-The following is a short description of how this module works. The module only contains a few files, and part are just there to add it to the Magento installation and are common to all modules, being:
+The following is a short explanation of how this module works. The module only contains a few files, and 3 of those are just there to add it to the Magento installation and are common to all modules, being:
 
 | File                  | Use
 |-----------------------|----------------------------------------------
@@ -149,7 +150,7 @@ The following is a short description of how this module works. The module only c
 
 ## Route to this module
 
-The module generates an XML file containing information on the products you would like to synchronize with your Google Merchants account. When Google requests the XML feed from your website, Magento's frontend needs to to know this particular request needs to be routed to this module. By default the URL of the request for the XML feed is `yoursite.com/inaticgoogleshoppingfeed`, though you could easily change this into something else. Directing the request on the frontend to a particular module is done in `etc/frontend/routes.xml`, and it is the `frontName` in below configuration that determines the `path` of the URL.
+The module generates an XML file containing information on the products you would like to synchronize with your Google Merchants account. When Google requests the XML feed from your website, Magento's frontend needs to route the request to this module. By default the URL of the request for the XML feed is `yoursite.com/inaticgoogleshoppingfeed`, though you can easily change this into something else. Directing the request on the frontend to a particular module is done in `etc/frontend/routes.xml`, and it is the `frontName` in below configuration that determines the `path` of the URL.
 
 ```etc/frontend/routes.xml
 <router id="standard">
@@ -161,7 +162,7 @@ The module generates an XML file containing information on the products you woul
 
 ## Process the request
 
-Once the request arrives at the module, a controller at `Controller/Index/Index.php` takes care of further processing. The controller prepares a response, sets a header to specify that the content being returned is XML data, and gets that XML content from the `xmlFeed` object in `Model/XmlFeed.php`. As you can see, this piece of code checks if the configuration of the module has set the feed to `enabled`. The configuration in question can be found at **Stores | Configuration | Marketing | Feeds**.
+Once the request arrives at the module, a controller at `Controller/Index/Index.php` takes care of further processing. The controller prepares a response, sets the content type being returned to *XML* in the header, and gets that XML content from the `xmlFeed` object in `Model/XmlFeed.php`. As you can see, this piece of code checks if the configuration of the module has set the feed to `enabled`. The feed is enabled from the admin panel by going to **Stores | Configuration | Marketing | Feeds**.
 
 ```Controller/Index/Index.php
 if (!empty($this->helper->getConfig('enabled'))) {
@@ -192,7 +193,7 @@ public function getFilteredProducts()
 
 ## Creating XML data
 
-Each XML text file starts with a header and ends with a footer. Data for each of the products in the feed is placed between header and footer in `<item></item>` tags.
+An XML text file starts with a header and ends with a footer. Data for each of the products in the feed is placed between header and footer in `<item></item>` tags.
 
 ```
 <?xml version="1.0"?>
@@ -200,7 +201,7 @@ Each XML text file starts with a header and ends with a footer. Data for each of
 <channel>
 <title>Product Feed</title>
 <link>https://mystore.com/</link>
-<description>Product Feed for Facebook</description>
+<description>Product Feed for Google Shopping</description>
 
 <item>...</item>
 <item>...</item>
@@ -222,7 +223,7 @@ foreach ($productCollection as $product) {
 ```
 
 ### Product data
-The `buildProductXml` function takes care of fetching the relevant feed data for each of the products and formats this data according to Google requirements. All product data is accessible from the `$product` object, either by a convenience method like `getName()` or by use of generic methods like `getData() or `getAttributeText()`.
+The `buildProductXml` function takes care of fetching relevant feed data for each of the products and formats this data according to Google requirements. All product data is accessible from the `$product` object, either by a convenience method like `getName()` or by use of generic methods like `getData() or `getAttributeText()`.
 
 ```
 $product->getName();
@@ -236,14 +237,14 @@ $product->getAttributeText('google_product_category');
 
 ## Cron
 
-A cron job takes care of generating the Google Shopping feed on a daily basis. This is configured in `/etc/crontab.xml` and the file in this case is set to be generated every day at 40 minutes past midnight. As you can see, the object being instantiated is `Inatic\FeedFacebook\Cron\GenerateFeed` and the `execute` method is called on the object. Latter method executes `xmlFeed->getFeed()` to get the XML feed data and saves it to the `pub` directory in the Magento installation.
+A cron job takes care of generating the Google Shopping feed on a daily basis. This is configured in `/etc/crontab.xml` and the file in this case is set to be generated every day at 40 minutes past midnight. As you can see, the object being instantiated is `Inatic\FeedFacebook\Cron\GenerateFeed` and the `execute` method is called on the object. Latter method executes `xmlFeed->getFeed()` to get the XML feed data and saves it to the `pub` directory of the Magento installation.
 
 ```
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
     <group id="default">
         <job name="inatic_googleshipping_xml" instance="Inatic\GoogleShippingFeed\Cron\GenerateFeed" method="execute">
-            <schedule>30 0 * * *</schedule>
+            <schedule>40 0 * * *</schedule>
         </job>
     </group>
 </config>
