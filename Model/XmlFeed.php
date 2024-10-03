@@ -197,9 +197,9 @@ class XmlFeed
     public function fixDescription($data): string
     {
         $description = $data;
-        $encode = mb_detect_encoding($data);
+        $encode = mb_detect_encoding($data ?? '');
         $encode = str_replace( "\r", "", $encode);
-        return mb_convert_encoding($description, 'UTF-8', $encode);
+        return mb_convert_encoding($description ?? '', 'UTF-8', $encode);
     }
 
     public function createNode(string $nodeName, string $value, bool $cData = false): string
